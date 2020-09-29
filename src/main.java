@@ -196,6 +196,57 @@ public class main {
             result = result + intpol[i][n]*Math.pow(x, i);
         }
         System.out.println(result);
-    }    
+    }
+    /* INPUT */
+    public static void inputSPLKeyboard() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Jumlah baris (m) = ");
+        int m = input.nextInt();
+        System.out.print("Jumlah kolom (n) = ");
+        int n = input.nextInt();
+        double a[][] = new double[m][n];
+        double b[] = new double[m];
+        int i,j;
+        // input matriks a
+        System.out.println("Input matriks a[i][j]: ");
+        for (i=0;i<m;i++) {
+            for (j=0;j<n;j++) {
+                System.out.print("a["+i+"]["+j+"]: ");
+                a[i][j] = input.nextDouble();
+            }
+        }
+        // input array b
+        System.out.println("Input b[i]: ");
+        for (i=0;i<m;i++) {
+            System.out.print("b["+i+"]: ");
+            b[i]= input.nextDouble();
+        }
+        System.out.println("Matriks augmented:");
+        printMatriksAugmented(a,b);
+    }
+    /* OUTPUT */
+    public static void printMatriks (double[][] mat) {
+        for (int i = 0; i < mat.length; i++) {
+            for (int j = 0; j < mat[i].length; j++) {
+                System.out.print(mat[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+    public static void printMatriksAugmented (double[][] a,double[] b) {
+        for (int i = 0; i < a.length; i++) {
+            for (int j = 0; j < a[i].length; j++) {
+                System.out.print(a[i][j]+" ");
+            }
+            System.out.print(b[i]);
+            System.out.println();
+        }
+    }
+    public static void printArray (double[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println("x["+i+"]: "+arr[i]);
+        }
+    }
+    
 
 }
