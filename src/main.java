@@ -54,4 +54,70 @@ public class main {
 
 
 }
+/*Determinan dengan Ekspansi Kofaktor*/
+public double detCofactor(double matrix[][], int n)
+{
+    //Basis yaitu matriks dengan 1 elemen
+    if(n*n == 1)
+    {
+        return matrix[0][0];
+    }
+
+    //Rekurens
+    else
+    {
+        double cofactor[][] = new double [n-1][n-1];
+        double determinan = 0;
+        //Ekspansi kofaktor baris pertama matriks
+        for (int j=0; j<n; j++)
+        {
+            int iM = 1;
+            int iCof = 0;
+            while (iM<n)
+            {
+                int jM = 0;
+                int jCof = 0;
+                while (jM<n)
+                {
+                    if(jM != j)
+                    {
+                        cofactor[iCof][jCof] = matrix[iM][jM];
+                        jCof++;
+                    }
+                    jM++;
+                }
+                iCof++;
+                iM++;
+            }
+            //Penambahan dari perkalian elemen matriks dengan kofaktornya
+            determinan += Math.pow(-1, j)*matrix[0][j]*detCofactor(cofactor, n-1);
+        }
+        return determinan;
+    }
+}
+
+/*Determinan dengan Reduksi Baris/Metode Gauss*/
+public double detGauss(double matrix[][], int n)
+{
+    //Membentuk matriks segitiga atas
+    for (int j=0; j<n; j++)
+    {
+        for (int i=j+1; i<n; i++)
+        {
+            for (int k=j; k<n; k++)
+            {
+                matrix[i][k] = matrix[i-1][k] - matrix[i][k]*matrix[i-1][j]/matrix[i][j];
+            }
+        }
+    }
+
+    //Mengalikan elemen diagonal utama matriks
+    double determinan = 1;
+    for (int k=0; k<n; k++)
+    {
+        determinan *= matrix[k][k];
+    }
+    return determinan;
+}
+
 }
