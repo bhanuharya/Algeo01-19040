@@ -145,7 +145,7 @@ public class main {
             {
                 intpol[j][k] = intpol[j][k]/intpol[j][j];
             }
-            //Membentuk semua elemen di atas dan di bawah leading menjadi 0
+            //Membentuk semua elemen di atas dan di bawah leading 1 menjadi 0
             for(int i=0; i<n; i++)
             {
                 if(i!=j)
