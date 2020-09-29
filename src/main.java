@@ -26,6 +26,8 @@ public class main {
 
         case 2: 
             //fungsi utama determinan
+            System.out.println("1. Reduksi Baris");
+            System.out.println("2. Ekspansi Kofaktor");
             break;
 
         case 3:
@@ -119,5 +121,81 @@ public class main {
         }
         return determinan;
     }
+
+    /*Interpolasi Polinom*/
+    public void intPol(double matrix[][], int n, double x)
+    {
+        //Membentuk matriks augmented persamaan lanjar
+        double intpol[][] = new double [n][n+1];
+        for (int i=0; i<n; i++)
+        {
+            intpol[i][0] = 1;
+            for (int j=1; j<n; j++)
+            {
+                intpol[i][j] = Math.pow(matrix[i][0], j);
+            }
+            intpol[i][n] = matrix[i][1];
+        }
+
+        //Mencari solusi dengan metode Gauss-Jordan
+        for(int j=0; j<n+1; j++)
+        {
+            //Membentuk leading 1
+            for(int k=j; k<n+1; k++)
+            {
+                intpol[j][k] = intpol[j][k]/intpol[j][j];
+            }
+            //Membentuk semua elemen di atas dan di bawah leading menjadi 0
+            for(int i=0; i<n; i++)
+            {
+                if(i!=j)
+                {
+                    for(int l=j; l<n+1; l++)
+                    {
+                        intpol[i][l] = intpol[i][l] - intpol[i][j]*intpol[j][l];
+                    }
+                }    
+            }
+        }
+
+        //Mengeluarkan persamaan polinom
+        System.out.println("Persamaan polinom:");
+        System.out.printf("%f", intpol[0][n]);
+        for(int i=1; i<n; i++)
+        {
+            if(intpol[i][n] > 0)
+            {
+                if(i==1)
+                {
+                    System.out.printf("+%fx", intpol[i][n]);
+                }
+                else
+                {
+                    System.out.printf("+%fx^%d", intpol[i][n],i);
+                }
+            }
+            else
+            {
+                if(i==1)
+                {
+                    System.out.printf("%fx", intpol[i][n]);
+                }
+                else
+                {
+                    System.out.printf("%fx^%d", intpol[i][n],i);
+                }
+            }
+        }
+        System.out.println("\n");
+
+        //Estimasi nilai fungsi dengan masukan x
+        System.out.println("Estimasi nilai fungsi: ");
+        double result = 0;
+        for(int i=0; i<n; i++)
+        {
+            result = result + intpol[i][n]*Math.pow(x, i);
+        }
+        System.out.println(result);
+    }    
 
 }
