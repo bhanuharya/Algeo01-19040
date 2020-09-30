@@ -99,8 +99,8 @@ public class main {
     }
 
 
-    /*DETERMINAN DENGAN REDUKSI BARIS/METODE GAUSS*/
-    public static double detGauss(double matrix[][], int n)
+    /*DETERMINAN DENGAN REDUKSI BARIS*/
+    public static double detRowReduction(double matrix[][], int n)
     {
         //Membentuk matriks segitiga atas
         int swap = 0;
