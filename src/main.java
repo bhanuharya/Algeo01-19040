@@ -56,7 +56,7 @@ public class main {
 
 
 }
-    /*Determinan dengan Ekspansi Kofaktor*/
+    /*DETERMINAN DENGAN EKSPANSI KOFAKTOR*/
     public double detCofactor(double matrix[][], int n)
     {
         //Basis yaitu matriks dengan 1 elemen
@@ -98,17 +98,29 @@ public class main {
         }
     }
 
-    /*Determinan dengan Reduksi Baris/Metode Gauss*/
-    public double detGauss(double matrix[][], int n)
+
+    /*DETERMINAN DENGAN REDUKSI BARIS/METODE GAUSS*/
+    public static double detGauss(double matrix[][], int n)
     {
         //Membentuk matriks segitiga atas
+        int swap = 0;
         for (int j=0; j<n; j++)
         {
-            for (int i=j+1; i<n; i++)
+            //Menukar baris dengan baris terakhir jika elemen[j][j] adalah 0
+            if(matrix[j][j] == 0)
             {
-                for (int k=j; k<n; k++)
+                double temp[] = matrix[j];
+                matrix[j] = matrix[n-1];
+                matrix[n-1] = temp; 
+                swap = swap + 1;
+            }
+            //Membentuk elemen matriks di bawah leading 1 menjadi 0
+            for(int i=j+1; i<n; i++)
+            {
+                double factor = matrix[i][j]/matrix[j][j];
+                for(int k=j; k<n; k++)
                 {
-                    matrix[i][k] = matrix[i-1][k] - matrix[i][k]*matrix[i-1][j]/matrix[i][j];
+                    matrix[i][k] = matrix[i][k] - matrix[j][k]*factor;
                 }
             }
         }
@@ -117,13 +129,15 @@ public class main {
         double determinan = 1;
         for (int k=0; k<n; k++)
         {
-            determinan *= matrix[k][k];
+            determinan = determinan*matrix[k][k];
         }
+        determinan = determinan*Math.pow(-1,swap);
         return determinan;
     }
 
-    /*Interpolasi Polinom*/
-    public void intPol(double matrix[][], int n, double x)
+
+    /*INTERPOLASI POLINOM*/
+    public static void intPol(double matrix[][], int n, double x)
     {
         //Membentuk matriks augmented persamaan lanjar
         double intpol[][] = new double [n][n+1];
@@ -138,23 +152,35 @@ public class main {
         }
 
         //Mencari solusi dengan metode Gauss-Jordan
-        for(int j=0; j<n+1; j++)
+        for(int j=0; j<n; j++)
         {
-            //Membentuk leading 1
-            for(int k=j; k<n+1; k++)
+            //Menukar baris dengan baris terakhir jika elemen[j][j] adalah 0
+            if(intpol[j][j] == 0)
             {
-                intpol[j][k] = intpol[j][k]/intpol[j][j];
+                double temp[] = intpol[j];
+                intpol[j] = intpol[n-1];
+                intpol[n-1] = temp; 
             }
-            //Membentuk semua elemen di atas dan di bawah leading 1 menjadi 0
+
+            //Membentuk leading 1
+            double div = intpol[j][j];
+            for(int k=0; k<n+1; k++)
+            {
+                intpol[j][k] = intpol[j][k]/div;
+            }
+            
+            //Membentuk elemen matriks di atas dan di bawah leading 1 menjadi 0
             for(int i=0; i<n; i++)
             {
+                double factor = intpol[i][j]/intpol[j][j];
                 if(i!=j)
                 {
-                    for(int l=j; l<n+1; l++)
+                    for(int k=j; k<n; k++)
                     {
-                        intpol[i][l] = intpol[i][l] - intpol[i][j]*intpol[j][l];
+                        intpol[i][k] = intpol[i][k] - intpol[j][k]*factor;
                     }
-                }    
+                    intpol[i][n] = intpol[i][n] - intpol[j][n]*factor;
+                }
             }
         }
 
@@ -197,6 +223,8 @@ public class main {
         }
         System.out.println(result);
     }
+
+
     /* INPUT */
     public static void inputSPLKeyboard() {
         Scanner input = new Scanner(System.in);
