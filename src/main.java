@@ -32,6 +32,7 @@ public class main {
 
         case 3:
             //fungsi utama matriks balikan
+            mainInverse();
             break;
 
         case 4: 
@@ -276,5 +277,212 @@ public class main {
         }
     }
     
+ public static void mainInverse (){
+         // masukan ukuran matriks nxn
+         Scanner input = new Scanner(System.in);
 
+            
+            System.out.println("1. Cari Matriks Balikan dengan Metode Ekspansi Kofaktor");
+            System.out.println("2. Cari Matriks Balikan dengan Metode Gauss Jordan");
+            System.out.println("Pilih Metode untuk Mencari Matriks Balikan: ");
+            int pilihan = input.nextInt();
+            System.out.println("Masukan dimensi dari matriks: ");
+            int n = input.nextInt();
+            System.out.println("\n");
+           //definisikan matriks yang dibutuhkan
+             double matrix[][]= new double[n][n];
+            double adj[][]= new double[n][n];
+            double inv[][]= new double[n][n];
+
+             //input data matriks
+            inputMatrix(input, matrix, n);
+            System.out.println("\n");
+ 
+            //Output Matriks yang diinput
+             System.out.println("Matriks anda adalah: ");
+             print(matrix, n);
+            System.out.println("\n");
+            
+            System.out.println("\n");
+
+            if (determinan(matrix, n) == 0){
+                System.out.print("Matriks singular, tidak memiliki matriks balikan!");
+            }else{
+            
+            if (pilihan == 1){
+                System.out.print("Matriks balikan anda adalah: \n");
+                // menentukan adjoint dari matriks
+                adj = adjoint(matrix, adj, n);
+ 
+                 // menentukan matriks balikan
+                inv = matriksBalikan(matrix, n);
+                print(inv, n);
+            }else if (pilihan == 2){
+                inv = gaussian(matrix, n);
+                print(inv, n);
+            }
+
+        }
+     
+ 
+         System.out.println("\n");
+
+         System.out.println("[Terima Kasih!]");
+         System.out.println("\n");
+ 
+    }
+
+    public static double[][] matriksBalikan(double matrix[][], int n) { 
+    
+
+    // Mencari matriks adjoint
+    double [][]adj = new double[n][n]; 
+    adjoint(matrix, adj, n); 
+  
+    // Mencari matriks balikan dengan rumus [ (matrix)^-1 = adj(matrix) / det(matrix) ] 
+    double [][]inverse = new double[n][n];
+    for (int i = 0; i < n; i++) 
+        for (int j = 0; j < n; j++) 
+            inverse[i][j] = (adj[i][j] / determinan(matrix, n)); 
+  
+            return inverse; 
+}  
+    public static void inputMatrix(Scanner scan, double[][] matrix, int n){
+        System.out.println("Masukan Data Matrix: ");
+             
+             for (int i = 0; i < n; i++)
+             {
+                 for (int j = 0; j < n; j++)
+                 {
+                     matrix[i][j] = scan.nextDouble();
+                 }
+             }
+     }
+     public static void print(double[][] matrix, int n){
+        for (int i=0; i<n; ++i) 
+        {
+            for (int j=0; j<n; ++j)
+            {
+                System.out.print(matrix[i][j]+"  ");
+            }
+            System.out.println();
+        }
+
+     }
+
+     public static double determinan(double matrix[][], int n) 
+    { 
+        double det = 10E-100; // supaya tidak error exception karena dibagi 0, inital det dijadikan 1 x 10^-100
+      
+        if (n == 1) 
+            return matrix[0][0]; 
+          
+        // matriks temp untuk menyimpan kofaktor
+        double[][] temp = new double[n][n];
+          
+        // untuk menyimpan pengali
+        int sign = 1;  
+      
+        // iterasi elemen pada baris pertama
+        for (int brs = 0; brs < n; brs++) 
+        { 
+            // mendapat kofaktor pada baris pertama, lalu mencari determinan secara rekursif
+            kofaktor(matrix, temp, 0, brs, n); 
+            det += sign * matrix[0][brs] * determinan(temp, n - 1); 
+      
+            // penukaran pengali untuk setiap pergantian
+            sign = -sign; 
+        } 
+      
+        return det ; 
+    } 
+
+    public static void kofaktor(double matrix[][], double temp[][], int p, int q, int n) { 
+    int i = 0, j = 0; 
+
+        for (int brs = 0; brs < n; brs++){ 
+            for (int kol = 0; kol < n; kol++) { 
+       
+                // meyimpan elemen yang tidak ada di baris dan kolom tertentu pada matriks sementara
+                if (brs != p && kol != q){ 
+                    temp[i][j++] = matrix[brs][kol]; 
+
+                    // jika baris terisi, menambah indeks baris dan mengulang kolom dari awal pada setip barisnya
+                    if (j == n - 1){ 
+                        j = 0; 
+                        i++; 
+         } 
+     } 
+ } 
+} 
+} 
+
+
+    public static double[][] adjoint(double matrix[][],double [][]adj, int n) 
+{  
+    if (n == 1) { 
+        adj[0][0] = 1; 
+        } 
+    int sign = 1; 
+    double[][] temp = new double[n][n];
+    
+  
+    for (int i = 0; i < n; i++) 
+    { 
+        for (int j = 0; j < n; j++) 
+        { 
+            // mencari bentuk matriks kofaktor
+            kofaktor(matrix, temp, i, j, n); 
+  
+            // pengali dengan pola sesuai dengan ukuran matriks
+            if ((i + j) % 2 == 0){
+                sign = 1;}
+            else{
+                sign = -1;} 
+
+            // mencari kofaktor entri dari matriks lalu men-transpose matriks kofaktor
+            adj[j][i] = (sign)*(determinan(temp, n-1)); 
+        } 
+    } return adj;
+} 
+public static double[][] gaussian(double matrix[][], int n) {
+    double[][] inverse = new double[n][n];
+    
+    // Membuat matriks inverse dengan elemen diagonal = 1 dan elemen lainnya = 0
+    for (int i = 0; i < n; i++)
+         {
+             for (int j = 0; j < n; j++)
+             {
+                 if ( i == j){
+                     inverse[i][j] = 1;
+                 }else{
+                     inverse[i][j] = 0;
+                 }
+             }           
+}
+
+//  Kemudian loop for dijalankan pada ukuran matriks input dan di dalam for loop kita telah memodifikasi matriks input 
+// dan matriks invers pada setiap iterasi dengan membagi setiap elemen dengan elemen matriks tertentu.
+for (int k = 0; k < n; k++)
+
+         {  
+            double temp ;
+            temp = matrix[k][k];
+             for (int j = 0; j < n; j++)
+             {
+                 matrix[k][j] /= temp;
+                 inverse[k][j] /= temp;
+        }
+// Lalu loop dalam ini berjalan untuk ukuran matriks untuk setiap iterasi luar dan ini memodifikasi matriks input dan invers juga.
+        for ( int i = 0; i < n; i++){
+            temp = matrix[i][k];
+            for (int j = 0; j < n; j++){
+                if(i == k ) break;
+
+                matrix[i][j] -= matrix[k][j]*temp;
+                inverse[i][j] -= inverse[k][j]*temp;
+            }
+        }
+    }
+            return inverse;}
 }
