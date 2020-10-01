@@ -28,9 +28,46 @@ public class main {
             break;
 
         case 2: 
-            //fungsi utama determinan
             System.out.println("1. Reduksi Baris");
             System.out.println("2. Ekspansi Kofaktor");
+            int metodeDet = input.nextInt();
+            
+            System.out.println("1. Membaca dari file");
+            System.out.println("2. Membaca dari keyboard");
+            int bacaDet = input.nextInt();
+
+            if(bacaDet == 1)
+            {
+                //double matrixDet[][] = bacaFile(namafile);
+            }
+            else if(bacaDet == 2)
+            {
+                //Menerima input matriks
+                System.out.println("Jumlah baris dan kolom:");
+                int nDet = input.nextInt();
+                System.out.println("Matriks:");
+                double matrixDet[][] = new double [nDet][nDet];
+
+                for(int i=0; i<nDet; i++)
+                {
+                    for(int j=0; j<nDet; j++)
+                    {
+                        matrixDet[i][j] = input.nextDouble(); 
+                    }
+                }
+            }
+
+            //Menghasilkan determinan matriks
+            if(metodeDet == 1)
+            {
+                double detrowreduction = detRowReduction(matrixDet,nDet);
+                System.out.println(detrowreduction);
+            }
+            else if(metodeDet == 2)
+            {
+                double detcofactor = detCofactor(matrixDet,nDet);
+                System.out.println(detcofactor);
+            }
             break;
 
         case 3:
@@ -40,6 +77,32 @@ public class main {
 
         case 4: 
             //fungsi utama interpolasi polinom
+            double x;
+            System.out.println("1. Membaca dari file");
+            System.out.println("2. Membaca dari keyboard");
+            int bacaInt = input.nextInt()
+            if(bacaInt == 1)
+            {
+                //baca dari file
+            }
+            else if(bacaInt == 2)
+            {
+                System.out.println("Jumlah data:");
+                int nInt = input.nextInt();
+                System.out.println("Matriks:");
+                double matrixInt[][] = new double [nInt][2];
+
+                for(int i=0; i<nInt; i++)
+                {
+                    for(int j=0; j<2; j++)
+                    {
+                        matrixInt[i][j] = input.nextDouble(); 
+                    }
+                }
+                System.out.println("x:");
+                x = input.nextDouble();
+                intPol(matrixInt, nInt, x);
+            }
             break;
 
         case 5:
