@@ -1,4 +1,7 @@
 import java.util.Scanner;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.FileNotFoundException;
 
 public class main {
     public static void main(String args[]) 
@@ -485,4 +488,56 @@ for (int k = 0; k < n; k++)
         }
     }
             return inverse;}
+    
+    /*BACA MATRIKS DARI FILE*/
+    public static double[][] bacaFile(String namafile)
+    {
+        try {
+        /*Kamus*/
+        String directory = "./data/" + namafile;
+        File file = new File(directory);
+        int row = 0;
+        int column = 0;
+        int i,j;
+
+        Scanner matriks = new Scanner(file);
+
+        /*Algoritma*/
+        //Mendapatkan baris
+        while (matriks.hasNextLine())
+        {
+            row++;
+            matriks.nextLine();
+        }
+        matriks.close();
+
+        matriks = new Scanner(file);
+        Scanner line = new Scanner(matriks.nextLine());
+
+        //Mendapatkan kolom
+        while(line.hasNextDouble()))
+        {
+            column++;
+            line.nextDouble();
+        }
+        line.close();
+        matriks.close();
+
+        matriks = new Scanner(file);
+
+        //Mengassign matriks
+        double result[][] = new double[row][column];
+        for(i=0; i<row; i++)
+        {
+            for(j=0; j<column; j++)
+            {
+                result[i][j] = matriks.nextDouble()
+            }
+        }
+        matriks.close();
+        } catch(FileNotFoundException e){
+            System.err.printf("error");
+        }
+        return result;
+    }
 }
