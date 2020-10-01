@@ -32,22 +32,17 @@ public class main {
             System.out.println("2. Ekspansi Kofaktor");
             int metodeDet = input.nextInt();
             
-            System.out.println("1. Membaca dari file");
-            System.out.println("2. Membaca dari keyboard");
+            System.out.println("1. Membaca dari keyboard");
+            System.out.println("2. Membaca dari file");
             int bacaDet = input.nextInt();
 
             if(bacaDet == 1)
-            {
-                //double matrixDet[][] = bacaFile(namafile);
-            }
-            else if(bacaDet == 2)
             {
                 //Menerima input matriks
                 System.out.println("Jumlah baris dan kolom:");
                 int nDet = input.nextInt();
                 System.out.println("Matriks:");
                 double matrixDet[][] = new double [nDet][nDet];
-
                 for(int i=0; i<nDet; i++)
                 {
                     for(int j=0; j<nDet; j++)
@@ -55,19 +50,23 @@ public class main {
                         matrixDet[i][j] = input.nextDouble(); 
                     }
                 }
-            }
 
-            //Menghasilkan determinan matriks
-            if(metodeDet == 1)
-            {
-                double detrowreduction = detRowReduction(matrixDet,nDet);
-                System.out.println(detrowreduction);
+                //Menghasilkan determinan
+                if(metodeDet == 1)
+                {
+                    double detrowreduction = detRowReduction(matrixDet,nDet);
+                    System.out.println(detrowreduction);
+                }
+                else if(metodeDet == 2)
+                {
+                    double detcofactor = detCofactor(matrixDet,nDet);
+                    System.out.println(detcofactor);
+                }
             }
-            else if(metodeDet == 2)
+            /*else if(bacaDet == 2)
             {
-                double detcofactor = detCofactor(matrixDet,nDet);
-                System.out.println(detcofactor);
-            }
+                //double matrixDet[][] = bacaFile(namafile);
+            }*/            
             break;
 
         case 3:
@@ -80,7 +79,7 @@ public class main {
             double x;
             System.out.println("1. Membaca dari file");
             System.out.println("2. Membaca dari keyboard");
-            int bacaInt = input.nextInt()
+            int bacaInt = input.nextInt();
             if(bacaInt == 1)
             {
                 //baca dari file
@@ -124,7 +123,7 @@ public class main {
 
 }
     /*DETERMINAN DENGAN EKSPANSI KOFAKTOR*/
-    public double detCofactor(double matrix[][], int n)
+    public static double detCofactor(double matrix[][], int n)
     {
         //Basis yaitu matriks dengan 1 elemen
         if(n*n == 1)
@@ -555,6 +554,7 @@ for (int k = 0; k < n; k++)
     /*BACA MATRIKS DARI FILE*/
     public static double[][] bacaFile(String namafile)
     {
+        double result[][] = new double [100][100];
         try {
         /*Kamus*/
         String directory = "./data/" + namafile;
@@ -578,7 +578,7 @@ for (int k = 0; k < n; k++)
         Scanner line = new Scanner(matriks.nextLine());
 
         //Mendapatkan kolom
-        while(line.hasNextDouble()))
+        while(line.hasNextDouble())
         {
             column++;
             line.nextDouble();
@@ -589,15 +589,16 @@ for (int k = 0; k < n; k++)
         matriks = new Scanner(file);
 
         //Mengassign matriks
-        double result[][] = new double[row][column];
+        result = new double [row][column];
         for(i=0; i<row; i++)
         {
             for(j=0; j<column; j++)
             {
-                result[i][j] = matriks.nextDouble()
+                result[i][j] = matriks.nextDouble();
             }
         }
         matriks.close();
+        //return result;
         } catch(FileNotFoundException e){
             System.err.printf("error");
         }
