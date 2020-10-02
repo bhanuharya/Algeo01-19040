@@ -27,6 +27,27 @@ public class main {
 
             case 1:
             //fungsi utama Sistem Persamaan Linear
+            System.out.println("1. Metode Eliminasi Gauss");
+            System.out.println("2. Metode Eliminasi Gauss-Jordan");
+            System.out.println("3. Metode Matriks Balikan");
+            System.out.println("4. Metode Kaidah Cramer");
+            int metodeSPL = input.nextInt();
+            if (metodeSPL==1) {
+                // Gauss
+            }
+            else if (metodeSPL==2) {
+                //Gauss Jordan
+            }
+            else if (metodeSPL==3) {
+                MetodeMatriksBalikan();
+            }
+            else if (metodeSPL==4) {
+                MetodeKaidahCramer();
+            }
+            else {
+                System.out.println("Keluar dari program...");
+                System.exit(0);
+            }
             break;
 
         case 2: 
@@ -675,7 +696,8 @@ for (int k = 0; k < n; k++)
         }
         return (MHasil);
     }
-    public static void MetodeKaidahCramer() {
+   public static void MetodeKaidahCramer() { 
+        System.out.println("[Metode Kaidah Cramer]");
         Scanner input = new Scanner(System.in);
         System.out.print("Masukkan nilai n = ");
         int n = input.nextInt();
@@ -698,9 +720,20 @@ for (int k = 0; k < n; k++)
         int var;
         if (detCofactor(a, n) != 0) {
             System.out.println("Solusi:");
+            double solusiCramer[]= new double [n];
             for (var = 0; var < n; var++) {
-                System.out.print("x[" + (var + 1) + "] = ");
-                Cramer(a, b, var);
+                solusiCramer[var] = Cramer(a, b, var);
+            }
+            printArray(solusiCramer);
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileArray(solusiCramer,n);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
             }
         } else { // jika detA nya 0
             System.out.println("Tidak dapat dihitung dengan Kaidah Cramer");
@@ -708,7 +741,8 @@ for (int k = 0; k < n; k++)
         System.out.println("Keluar dari program...");
         System.exit(0);
     }
-    public static void MetodeMatriksBalikan() {
+    public static void MetodeMatriksBalikan() { 
+        System.out.println("[Metode Matriks Balikan]");
         Scanner input = new Scanner(System.in);
         System.out.print("Masukkan nilai n = ");
         int n = input.nextInt();
@@ -740,6 +774,16 @@ for (int k = 0; k < n; k++)
             System.out.println("Solusi:");
             for (j=0;j<(matriksHasil.length);j++) {
                 System.out.println("x["+(j+1)+"] = "+matriksHasil[j][0]);
+            }
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileMatriksMN(matriksHasil,matriksHasil.length,matriksHasil[0].length);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
             }
         } else { // jika detA nya 0, tidak bisa pakai metode invers
             System.out.println("Tidak dapat dihitung dengan metode Invers karena matriks tidak mempunyai balikan");
@@ -801,7 +845,7 @@ for (int k = 0; k < n; k++)
         }
         return Mout;
     }
-        public static void Cramer(double[][] A, double[] b, int var) {
+    public static double Cramer(double[][] A, double[] b, int var) {
         double[][] temp = copyMatriks(A);
         int i;
         double detA = detCofactor(A, A.length);
@@ -809,7 +853,7 @@ for (int k = 0; k < n; k++)
             temp[i][var] = b[i];
         }
         double det_temp = detCofactor(temp, temp.length);
-        System.out.println(det_temp / detA);
+        return(det_temp/detA);
     }
 
 // print to file
@@ -848,6 +892,42 @@ for (int k = 0; k < n; k++)
             printWriter.println(persamaan);
             printWriter.println(hasil);
             
+            printWriter.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+        /* Print solusi SPL ke file */
+    public static void TulisFileMatriksMN(double[][] matrix, int m, int n){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nama File: ");
+        String namaFile = input.nextLine();
+        try {
+            FileWriter fileWriter = new FileWriter(namaFile);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for (int i=0;i<m;i++){
+                for (int j=0;j<n;j++){
+                    printWriter.print(matrix[i][j]+"  ");
+                }
+                printWriter.println();
+            }
+            printWriter.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+    public static void TulisFileArray (double[] arr, int n) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nama File: ");
+        String namaFile = input.nextLine();
+        try {
+            FileWriter fileWriter = new FileWriter(namaFile);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for (int i=0;i<n;i++){
+                printWriter.println(arr[i]);
+            }
             printWriter.close();
         }
         catch (IOException e){
