@@ -711,5 +711,47 @@ for (int k = 0; k < n; k++)
         System.out.println("Keluar dari program...");
         System.exit(0);
     }
+    public static void matriksHilbert() { // Digunakan untuk testing saja
+        Scanner input = new Scanner(System.in);
+        System.out.print("Masukkan nilai n = ");
+        int n = input.nextInt();
+        int i,j,k;
+        double[][] H = new double[n][n];
+        double[] b = new double[n];
+        // Mengisi b
+        b[0]=1;
+        for (k=1;k<b.length;k++) {
+            b[k]=0;
+        }
+        // Mengisi matriks Hilbert
+        for (i=0;i<n;i++) {
+            for (j=0;j<n;j++) {
+                H[i][j]= 1.0/((i+1)+(j+1)-1.0);
+            }
+        }
+        System.out.println("Matriks Hilbert dengan n = "+(n)+" beserta b:");
+        printMatriksAugmented(H,b);
+        //InverseSPL(H,b);
+        /* Kaidah Cramer
+        int var;
+        if (detCofactor(H, n) != 0) {
+            System.out.println("Solusi:");
+            for (var = 0; var < n; var++) {
+                System.out.print("x[" + (var + 1) + "] = ");
+                Cramer(H, b, var);
+            }
+        } else { // jika detA nya 0
+            System.out.println("Tidak dapat dihitung dengan Kaidah Cramer");
+        }
+        */
+        /* GAUSS
+        Gauss(H,b);
+        printSolusiGauss(H,b);
+         */
+        /*
+        GaussJordan(H,b);
+        printSolusiGaussJordan(H,b);
+         */
+    }
 
 }
