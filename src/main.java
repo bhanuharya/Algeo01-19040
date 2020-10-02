@@ -102,7 +102,7 @@ public class main {
             }
             else if(bacaInt == 2)
             {
-                matrixInt = bacaFile("interpolasi.txt");
+                bacaFile(matrixInt, "interpolasi.txt");
                 //Mendapatkan baris
                 nInt = matrixInt.length;
 
@@ -559,12 +559,11 @@ for (int k = 0; k < n; k++)
             return inverse;}
     
     /*BACA MATRIKS DARI FILE*/
-    public static double[][] bacaFile(String namafile)
+    public static void bacaFile(double matrix[][], String namafile)
     {
-        double result[][] = new double [100][100];
         try {
         /*Kamus*/
-        String directory = "../data/" + namafile;
+        String directory = "./data/" + namafile;
         File file = new File(directory);
         int row = 0;
         int column = 0;
@@ -596,19 +595,18 @@ for (int k = 0; k < n; k++)
         matriks = new Scanner(file);
 
         //Mengassign matriks
-        result = new double [row][column];
+        matrix = new double [row][column];
         for(i=0; i<row; i++)
         {
             for(j=0; j<column; j++)
             {
-                result[i][j] = matriks.nextDouble();
+                matrix[i][j] = matriks.nextDouble();
             }
         }
         matriks.close();
         } catch(FileNotFoundException e){
             System.err.printf("error\n");
         }
-        return result;
     }
         public static void InverseSPL (double[][] A, double[] b) {
         int n=A.length;
