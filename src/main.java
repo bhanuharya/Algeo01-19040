@@ -603,7 +603,7 @@ for (int k = 0; k < n; k++)
         }
         return result;
     }
-        private static void InverseSPL (double[][] A, double[] b) {
+        public static void InverseSPL (double[][] A, double[] b) {
         int n=A.length;
         int i,j;
         if (detCofactor(A,n) != 0) {
@@ -752,6 +752,18 @@ for (int k = 0; k < n; k++)
         GaussJordan(H,b);
         printSolusiGaussJordan(H,b);
          */
+    }
+        public static double[][] copyMatriks(double[][] Min) {
+        int i, j;
+        int m = Min.length;
+        int n = Min[0].length;
+        double[][] Mout = new double[m][n];
+        for (i = 0; i < m; i++) {
+            for (j = 0; j < n; j++) {
+                Mout[i][j] = Min[i][j];
+            }
+        }
+        return Mout;
     }
 
 }
