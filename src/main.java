@@ -262,7 +262,9 @@ public class main {
 
         //Mengeluarkan persamaan polinom
         System.out.println("Persamaan polinom:");
+        String persamaan = "Persamaan Polinom:\n";
         System.out.printf("%f", intpol[0][n]);
+        persamaan += Double.toString(intpol[0][n]);
         for(int i=1; i<n; i++)
         {
             if(intpol[i][n] > 0)
@@ -270,10 +272,12 @@ public class main {
                 if(i==1)
                 {
                     System.out.printf("+%fx", intpol[i][n]);
+                    persamaan = persamaan + "+" + Double.toString(intpol[i][n]) + "x";
                 }
                 else
                 {
                     System.out.printf("+%fx^%d", intpol[i][n],i);
+                    persamaan = persamaan + "+" + Double.toString(intpol[i][n]) + "x^" + Integer.toString(i);
                 }
             }
             else
@@ -281,23 +285,28 @@ public class main {
                 if(i==1)
                 {
                     System.out.printf("%fx", intpol[i][n]);
+                    persamaan = persamaan + Double.toString(intpol[i][n]) + "x";
                 }
                 else
                 {
                     System.out.printf("%fx^%d", intpol[i][n],i);
+                    persamaan = persamaan + Double.toString(intpol[i][n]) + "x^" + Integer.toString(i);
                 }
             }
         }
         System.out.println("\n");
+        persamaan = persamaan + "\n";
 
         //Estimasi nilai fungsi dengan masukan x
         System.out.println("Estimasi nilai fungsi: ");
+        String hasil = "Estimasi nilai fungsi:\n";
         double result = 0;
         for(int i=0; i<n; i++)
         {
             result = result + intpol[i][n]*Math.pow(x, i);
         }
         System.out.println(result);
+        hasil = hasil + Double.toString(result);
     }
 
 
