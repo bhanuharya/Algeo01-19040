@@ -33,10 +33,10 @@ public class main {
             System.out.println("4. Metode Kaidah Cramer");
             int metodeSPL = input.nextInt();
             if (metodeSPL==1) {
-                // Gauss
+                MetodeGauss();
             }
             else if (metodeSPL==2) {
-                //Gauss Jordan
+                MetodeGaussJordan();
             }
             else if (metodeSPL==3) {
                 MetodeMatriksBalikan();
@@ -1232,6 +1232,338 @@ if ( pilihan == 1){
     
 }
 
+public static void MetodeGauss() {
+        System.out.println("[Metode Eliminasi Gauss]");
+        Scanner input = new Scanner(System.in);
+        System.out.print("Masukkan jumlah persamaan = ");
+        int m = input.nextInt();
+        System.out.print("Masukkan jumlah peubah = ");
+        int n = input.nextInt();
+        double a[][] = new double[m][n];
+        double b[] = new double[m];
+        int i, j;
+        // input matriks a
+        System.out.println("Input matriks "+m+"x"+n+": ");
+        for (i = 0; i < m; i++) {
+            for (j = 0; j < n; j++) {
+                a[i][j] = input.nextDouble();
+            }
+        }
+        // input array b
+        System.out.println("Input b: ");
+        for (i = 0; i < m; i++) {
+            System.out.print("b[" + (i+1) + "]: ");
+            b[i] = input.nextDouble();
+        }
+        Gauss(a,b);
+        /* Print solusi Gauss */
+        int solusiGauss = cekBarisTerakhir(a, b);
+        System.out.println("Solusi Gauss Jordan adalah:");
+        if (solusiGauss == 1) {
+            //int m= a.length;
+            //int n= a[0].length;
+            //int i, j;
+            double[] x = new double[m]; // tempat menyimpan solusi
+            x[n-1] = b[n-1] / a[n-1][n-1];
+            for (i = (n-2); i >= 0; i--) {
+                double sum = 0;
+                for (j = (i + 1); j <= (n - 1); j++) {
+                    sum = sum + (a[i][j] * x[j]);
+                }
+                x[i] = (b[i] - sum) / a[i][i];
+            }
+            printArray(x); //print hasil
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileArray(x,x.length);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
+            }
+        }
+        if (solusiGauss == 2) {
+            System.out.println("Solusi dalam bentuk parametrik");
+            arrParametrik = new String[a[0].length];
+            solusiParametrik(a,b);
+            for(i = 0;i<arrParametrik.length;i++)
+            {
+                System.out.println("x["+(i+1)+"] = " + arrParametrik[i]);
+            }
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileArrayString(arrParametrik, arrParametrik.length);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
+            }
+        }
+        if (solusiGauss == 3) {
+            System.out.println("Tidak ada solusi");
+        }
+        System.out.println("Keluar dari program...");
+        System.exit(0);
+    }
+    public static void MetodeGaussJordan() {
+        System.out.println("[Metode Eliminasi Gauss Jordan]");
+        Scanner input = new Scanner(System.in);
+        System.out.print("Masukkan jumlah persamaan = ");
+        int m = input.nextInt();
+        System.out.print("Masukkan jumlah peubah = ");
+        int n = input.nextInt();
+        double a[][] = new double[m][n];
+        double b[] = new double[m];
+        int i, j;
+        // input matriks a
+        System.out.println("Input matriks "+m+"x"+n+": ");
+        for (i = 0; i < m; i++) {
+            for (j = 0; j < n; j++) {
+                a[i][j] = input.nextDouble();
+            }
+        }
+        // input array b
+        System.out.println("Input b: ");
+        for (i = 0; i < m; i++) {
+            System.out.print("b[" + (i+1) + "]: ");
+            b[i] = input.nextDouble();
+        }
+        GaussJordan(a,b);
+        /* Print solusi Gauss Jordan */
+        int solusiGaussJordan = cekBarisTerakhir(a, b);
+        System.out.println("Solusi Gauss adalah:");
+        if (solusiGaussJordan == 1) {
+            //int m= a.length;
+            //int n= a[0].length;
+            //int i, j;
+            double[] x = new double[b.length]; // tempat menyimpan solusi
+            x[n-1] = b[n-1] / a[n-1][n-1];
+            for (i = (n-2); i >= 0; i--) {
+                double sum = 0;
+                for (j = (i + 1); j <= (n - 1); j++) {
+                    sum = sum + (a[i][j] * x[j]);
+                }
+                x[i] = (b[i] - sum) / a[i][i];
+            }
+            printArray(x); //print hasil
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileArray(x,x.length);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
+            }
+        }
+        if (solusiGaussJordan == 2) {
+            System.out.println("Solusi dalam bentuk parametrik");
+            arrParametrik = new String[a[0].length];
+            solusiParametrik(a,b);
+            for(i = 0;i<arrParametrik.length;i++)
+            {
+                System.out.println("x["+(i+1)+"] = " + arrParametrik[i]);
+            }
+            System.out.println("Simpan hasil?");
+            System.out.println("1. Ya");
+            System.out.println("2. Tidak");
+            int YN = input.nextInt();
+            if (YN==1) {
+                TulisFileArrayString(arrParametrik, arrParametrik.length);
+            }
+            else if (YN==2) {
+                System.out.println("Selesai");
+            }
+        }
+        if (solusiGaussJordan == 3) {
+            System.out.println("Tidak ada solusi");
+        }
+        System.out.println("Keluar dari program...");
+        System.exit(0);
+    }
+       public static void Gauss(double[][] a, double[] b) {
+        int n = (a[0].length);
+        double ratio;
+        int m = a.length;
+        // int n = a[0].length;
+        int i, j, k;
+
+        // Eliminasi Gauss
+        for (k = 0; k <= (n - 2); k++) {
+            if (Math.abs(a[k][k]) == 0) {
+                for (i = (k + 1); i <= (n - 1); i++) {
+                    if (Math.abs(a[i][k]) > Math.abs(a[k][k])) {
+                        // Menukar baris
+                        a[i][k] = a[k][i];
+                        b[i] = b[k];
+                        break;
+                    }
+                }
+            }
+            for (i = (k + 1); i <= (n - 1); i++) {
+                if (a[i][k] == 0) {
+                    continue;
+                }
+                ratio = a[k][k] / a[i][k];
+                for (j = k; j <= (n - 1); j++) {
+                    a[i][j] = a[k][j] - (a[i][j] * ratio);
+                }
+                b[i] = b[k] - ((b[i]) * ratio);
+            }
+
+        }
+    }
+       public static void GaussJordan(double[][] a, double[] b) {
+        Gauss(a, b);
+        int i, j, k,c;
+        int m = a.length;
+        int n = a[0].length;
+        for (i=0;i<(n);i++) {
+            if (a[i][i] == 0) {
+                c = 1;
+                while ((i + c) < m && a[i + c][i] == 0) {
+                    c++;
+                }
+                if ((i+c)==m) {
+                    break;
+                }
+                for (j = i, k = 0; k < (n-1); k++) {
+                    double temp = a[j][k];
+                    a[j][k] = a[j + c][k];
+                    a[j+c][k] = temp;
+                }
+            }
+            double div = a[i][i];
+            for (k = 0; k < (n); k++) {
+                a[i][k] = a[i][k] / div;
+            }
+            b[i] = b[i] / div;
+            for (j = 0; j < n; j++) {
+                if (i != j) {
+                    double ratio = a[j][i] / a[i][i];
+                    for (k = 0; k < n; k++) {
+                        a[j][k] = a[j][k] - (a[i][k] * ratio);
+                    }
+                    b[j] = b[j] - (b[i] * ratio);
+                }
+            }
+        }
+    }
+  public static int cekBarisTerakhir(double[][] a, double[] b) {
+        int m = a.length;
+        int n = a[0].length;
+        int i, j, solusi = 0;
+        for (i = 0; i < m; i++) {
+            solusi = 0;
+            for (j = 0; j < n; j++) {
+                if (a[i][j] != 0) {
+                    solusi = 1; // solusi unik
+                }
+            }
+            if (solusi != 1) {
+                if (b[i] == 0) { // seperti 0x+0y+0z=0
+                    solusi = 2; // solusi banyak
+                } else { // seperti 0x+0y+0z=2
+                    solusi = 3; // tidak ada solusi
+                }
+            }
+            if (solusi == 2 || solusi == 3) {
+                break;
+            }
+        }
+        return solusi;
+    }
+      public static void TulisFileArrayString (String[] arr, int n) {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nama File: ");
+        String namaFile = input.nextLine();
+        try {
+            FileWriter fileWriter = new FileWriter(namaFile);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for (int i=0;i<n;i++){
+                printWriter.println(arr[i]);
+            }
+            printWriter.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }  
+      public static String arrParametrik[];
+    private static void solusiParametrik(double a[][], double b[])
+    {
+        int i,j,brs,kol;
+        int p=a.length;
+        int q=a[0].length;
+        for(i=0;i<q;i++)
+        {
+            if(countKol(a,i) > 1)
+            {
+                arrParametrik[i] = randomChar();
+            }
+        }
+        for(brs=0; brs<p;kol++)
+        {
+             kol = brs;
+            while(a[brs][kol] != 1 && kol<a[brs].length - 1 )
+            {
+                kol++;
+            }
+            if(arrParametrik[kol] == null)
+            {
+                arrParametrik[kol] = ""+ (b[brs]);
+                for( j = kol + 1;j<a[brs].length;j++)
+                {
+                    if(a[brs][j] != 0)
+                    {
+                        arrParametrik[kol] += a[kol][j] > 0 ? " - " : " + ";
+                        arrParametrik[kol] += a[kol][j]+""+arrParametrik[j];
+                    }
+                }
+            }
+        }
+
+    }
+    private static int countKol (double mat[][], int kol) 
+    {
+        int count = 0;
+        for(int i = 0;i<mat.length;i++)
+        {
+            if(mat[i][kol] > 0)
+            {
+                count++;
+            }
+        }
+        return count;
+    }
+    private static String randomChar() {
+        Random rd = new Random();
+        int rnd = 97 + rd.nextInt(26);
+        char randomCharacter = (char) rnd;
+        return "" + randomCharacter;
+    }
+
+    private static void backSubstitution(double[][] a, double[] b) {
+        int m= a.length;
+        int n= a[0].length;
+        //int n = b.length;
+        int i, j;
+        double[] x = new double[m]; // tempat menyimpan solusi
+        x[n-1] = b[n-1] / a[n-1][n-1];
+        for (i = (n-2); i >= 0; i--) {
+            double sum = 0;
+            for (j = (i + 1); j <= (n - 1); j++) {
+                sum = sum + (a[i][j] * x[j]);
+            }
+            x[i] = (b[i] - sum) / a[i][i];
+        }
+        printArray(x); //print hasil
+    }
 
 } 
 
