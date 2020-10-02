@@ -65,8 +65,8 @@ public class main {
             }
             /*else if(bacaDet == 2)
             {
-                //double matrixDet[][] = bacaFile(namafile);
-            }*/            
+                double matrixDet[][] = bacaFile(namafile);
+            }*/           
             break;
 
         case 3:
@@ -76,20 +76,18 @@ public class main {
 
         case 4: 
             //fungsi utama interpolasi polinom
+            double matrixInt[][] = new double[100][100];
             double x;
-            System.out.println("1. Membaca dari file");
-            System.out.println("2. Membaca dari keyboard");
+            int nInt;
+            System.out.println("1. Membaca dari keyboard");
+            System.out.println("2. Membaca dari file");
             int bacaInt = input.nextInt();
             if(bacaInt == 1)
             {
-                //baca dari file
-            }
-            else if(bacaInt == 2)
-            {
                 System.out.println("Jumlah data:");
-                int nInt = input.nextInt();
+                nInt = input.nextInt();
                 System.out.println("Matriks:");
-                double matrixInt[][] = new double [nInt][2];
+                matrixInt = new double [nInt][2];
 
                 for(int i=0; i<nInt; i++)
                 {
@@ -98,6 +96,17 @@ public class main {
                         matrixInt[i][j] = input.nextDouble(); 
                     }
                 }
+                System.out.println("x:");
+                x = input.nextDouble();
+                intPol(matrixInt, nInt, x);
+            }
+            else if(bacaInt == 2)
+            {
+                matrixInt = bacaFile("interpolasi.txt");
+                //Mendapatkan baris
+                nInt = matrixInt.length;
+                System.out.println("test");
+
                 System.out.println("x:");
                 x = input.nextDouble();
                 intPol(matrixInt, nInt, x);
@@ -597,7 +606,6 @@ for (int k = 0; k < n; k++)
             }
         }
         matriks.close();
-        //return result;
         } catch(FileNotFoundException e){
             System.err.printf("error");
         }
