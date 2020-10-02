@@ -307,6 +307,9 @@ public class main {
         }
         System.out.println(result);
         hasil = hasil + Double.toString(result);
+
+        //Print to file
+        TulisFileIntPol(persamaan, hasil);
     }
 
 
@@ -825,6 +828,26 @@ for (int k = 0; k < n; k++)
                 // System.out.println("|");
                 printWriter.println();
             }
+            printWriter.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    /*PRINT HASIL INTERPOLASI POLINOM KE FILE*/
+    public static void TulisFileIntPol(String persamaan, String hasil)
+    {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nama File: ");
+        String namaFile = input.nextLine();
+        try {
+            FileWriter fileWriter = new FileWriter(namaFile);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            
+            printWriter.println(persamaan);
+            printWriter.println(hasil);
+            
             printWriter.close();
         }
         catch (IOException e){
