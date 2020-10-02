@@ -1,5 +1,5 @@
 # tubesalgeo1
 NIM Anggota :
-13519040
-13519054
-13519203
+Shafira Naya Aprisadianti 13519040
+Aisyah Farras Aqila 13519054
+Ramadhana Bhanuharya Wishnumurti 13519203
