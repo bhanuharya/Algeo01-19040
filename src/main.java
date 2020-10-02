@@ -564,7 +564,7 @@ for (int k = 0; k < n; k++)
         double result[][] = new double [100][100];
         try {
         /*Kamus*/
-        String directory = "./data/" + namafile;
+        String directory = "../data/" + namafile;
         File file = new File(directory);
         int row = 0;
         int column = 0;
@@ -606,7 +606,7 @@ for (int k = 0; k < n; k++)
         }
         matriks.close();
         } catch(FileNotFoundException e){
-            System.err.printf("error");
+            System.err.printf("error\n");
         }
         return result;
     }
