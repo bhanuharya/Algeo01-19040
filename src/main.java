@@ -136,6 +136,7 @@ public class main {
             break;
 
         case 5:
+            regresilinear();
             //funsgi utama regresi linear berganda
             break;
 
@@ -436,7 +437,7 @@ public class main {
                
            }else if (pilihan == 2){
                inv = gaussian(matrix, n);
-               System.out.println("1. cetak ke fil external");
+               System.out.println("1. cetak ke file external");
                System.out.println("2. cetak di console");
                int output2 = input.nextInt();
     
@@ -934,4 +935,303 @@ for (int k = 0; k < n; k++)
             e.printStackTrace();
         }
     }
+    public static void regresilinear() 
+    {  
+    Scanner input = new Scanner(System.in);
+    int nb = 20;
+    int nk = 4;
+ 
+    double X[][] = new double[100][100];
+    double Y[] = new double[100];
+    double Aug[][] = new double[nb][nk+1];
+
+    double M[][] = {{72.4, 76.3, 29.18, 0.9},
+                    {41.6, 70.3, 29.35, 0.91},
+                    {34.3, 77.1, 29.24, 0.96},
+                    {35.1, 68.0, 29.27, 0.89},
+                    {10.7, 79.0, 29.78, 1.00},
+                    {12.9, 67.4, 29.39, 1.10},
+                    {8.3, 66.8, 29.69, 1.15},
+                    {20.1, 76.9, 29.48, 1.03},
+                    {72.2, 77.7, 29.09, 0.77},
+                    {24.0, 67.7, 29.6, 1.07},
+                    {23.2, 76.8, 29.38, 1.07},
+                    {47.4, 86.6, 29.35, 0.94},
+                    {31.5, 76.9, 29.63, 1.10},
+                    {10.6, 86.3, 29.56, 1.10},
+                    {11.2, 86.0, 29.48, 1.10},
+                    {73.3, 76.3, 29.40, 0.91},
+                    {75.4, 77.9, 29.28, 0.87},
+                    {96.6, 78.7, 29.29, 0.78},
+                    {107.4, 86.8, 29.03, 0.82},
+                    {54.9, 70.9, 29.37, 0.95}};
+
+    for (int i = 0; i< nb; i++){
+        for (int j = 0; j < nk; j++){
+            if (j==0){ 
+                X[i][j] = 1;
+                
+            }else if ( j== nk -1){
+                Y[i] = M[i][j];
+                X[i][j] = M[i][j-1];
+            
+            }
+            else{
+                X[i][j] = M[i][j-1];
+            }
+        }
+    }
+   int brs = nb;
+    int kol = nk +1;
+
+    
+
+    for(int i =0; i<brs;i++) {
+        for(int j=0;j<nk ;j++) 
+             Aug[i][j] = X[i][j];    
+       }
+
+       for(int i =0; i<nb;i++) {
+           Aug[i][nk] = Y[i] ;
+       }
+    
+    
+    
+    System.out.println();
+
+    normalEq(Aug, X, Y, brs, kol, nb, nk);
+
+    }
+
+
+    
+    public static void printY(double[] matrix, int n){
+        
+             
+        for (int i = 0; i < n; i++)
+        {
+           System.out.print(matrix[i]+"  ");
+        }
 }
+ 
+    public static void inputMatrix(Scanner scan, double[][] matrix, int nb, int nk){
+        System.out.println("Masukan Data Matrix: ");
+             
+             for (int i = 0; i < nb; i++)
+             {
+                 for (int j = 0; j < nk; j++)
+                 {
+                     matrix[i][j] = scan.nextDouble();
+                 }
+             }
+     }
+
+     public static void print(double[][] matrix, int nb, int nk){
+        for (int i=0; i<nb; ++i) 
+        {
+            for (int j=0; j<nk; ++j)
+            {
+                System.out.print(matrix[i][j]+"  ");
+            }
+            System.out.println();
+        }
+
+     }
+     
+    public static void normalEq(double aug[][], double X[][], double Y[],  int brs, int kol, int nb, int nk){
+        
+        int brss = brs + 1;
+        double[][] temp = new double[100][100];
+        double[][] xtemp = new double[nk][nk];
+        double[]   ytemp = new double[nk];
+        double[][] hasil = new double[nk][nk+1];
+        int i,j;
+      for (i=0; i< brss; i++){
+          for(j=0;j<kol;j++){
+              if (i== 0 && j == 0){
+                  temp[i][j] = nb ;
+
+              }
+          else if ( j == kol- 1){
+              if (i == 0){
+                  temp[i][j] = sumupY(Y, brs);
+              }else{
+                  temp[i][j] = sumupXY(X, Y, brs, kol, nb, i);
+              }
+          }else{
+              if ( i == 0){
+                  temp[i][j] = sumupX(X, brs, kol, nb, j);
+              }else if (j==0){
+                  temp[i][j] = sumupX(X, brs,  kol,  nb, i);
+              }else{
+                  temp[i][j] = sumupXX(X,  nb,  kol, i, j);
+              }
+          }
+        }
+
+        
+    }
+    
+    for ( i = 0; i < nk; i++){
+        for( j= 0; j < nk + 1; j ++){
+            hasil[i][j] = temp[i][j];
+        }
+
+    }
+    System.out.println("Bentuk normal equation for multiple linear regression :");
+    System.out.println();
+    print(hasil, nk, nk+1);
+    System.out.println();
+
+    int val = 0;
+    val = solvespl(hasil, nk); 
+
+    if (val == 1)      
+        val = checksol(hasil, nk, val);
+        cetaksolusi(hasil, nk, val); 
+
+     
+    }
+   
+     public static double  sumupX(double[][] X, int brs, int kol, int nb, int nk){
+        double count = 0.0;
+        
+        for(int i = 0; i < nb; i++){
+            count += X[i][nk] ;
+
+        }
+        return count;
+    }
+
+    public static double  sumupXX(double[][] X, int brs, int kol, int nb, int nk){
+        double count = 0.0;
+        
+        for(int i = 0; i < brs ; i++){
+            count += X[i][nb]*X[i][nk] ;
+
+        } 
+        return count;
+    }
+
+
+     public static double  sumupY(double[] y, int nb) {
+         double count = 0.0;
+         for (int i = 0; i < nb; i++) {
+             count += y[i];
+         }
+         return count;
+     }
+
+     public static double  sumupXY(double[][] X, double[] y, int brs, int kol, int nb, int nk) {
+        double count = 0.0;
+        for (int i = 0; i < nb; i++) {
+            count += (X[i][nk] * y[i]) ;
+        }
+        return count;
+    }
+
+    public static int solvespl(double a[][], int nk) 
+{ 
+    int i, j, k = 0, c, val = 0;
+  
+    for (i = 0; i < nk; i++) 
+    { 
+        if (a[i][i] == 0)  
+        { 
+            c = 1; 
+            while ((i + c) < nk && a[i + c][i] == 0)  
+                c++;          
+            if ((i + c) == nk)  
+            { 
+                val = 1; 
+                break; 
+            } 
+            for (j = i, k = 0; k <= nk; k++)  
+            { 
+                double temp =a[j][k]; 
+                a[j][k] = a[j+c][k]; 
+                a[j+c][k] = temp; 
+            } 
+        } 
+  
+        for (j = 0; j < nk; j++)  
+        { 
+              
+            if (i != j)  
+            { 
+                  
+                double p = a[j][i] / a[i][i]; 
+  
+                for (k = 0; k <= nk; k++)                  
+                    a[j][k] = a[j][k] - (a[i][k]) * p;              
+            } 
+        } 
+    } 
+    return val; 
+} 
+public static int checksol(double a[][], int nK, int val) 
+{ 
+    int i, j; 
+    double sum; 
+      
+
+    val = 3; 
+    for (i = 0; i < nK; i++)  
+    { 
+        sum = 0; 
+        for (j = 0; j < nK; j++)      
+            sum = sum + a[i][j]; 
+        if (sum == a[i][j])  
+            val = 2;      
+    } 
+    return val; 
+} 
+
+public static void cetaksolusi(double a[][], int nk, int val) 
+{ Scanner input = new Scanner(System.in);
+    System.out.print("hasilnya adalah: "); 
+    double[] hasil = new double[nk];
+    if (val == 2) {   
+    System.out.println("Solusi tak hingga");  }
+    else if (val == 3)   {   
+    System.out.println("tidak ada solusi"); }
+    
+    else { 
+        for (int i = 0; i < nk; i++) 
+                    
+            hasil[i] = a[i][nk] / a[i][i] ;      
+    } 
+
+    for (int i = 0; i < nk; i++) {
+                    
+            System.out.print("B" + (i) + " = " +hasil[i] + " " );      
+    } 
+double x1, x2, x3, y, pilihan;
+System.out.println("Prediksi dengan data");
+System.out.println("y = B0 + B1x11 + B2x21 + B3x31");
+System.out.println();
+
+System.out.println("Masukan nilai humidity :");
+x1 = input.nextDouble();
+System.out.println("Masukan nilai temperature :");
+x2 = input.nextDouble();
+System.out.println("Masukan nilai pressure :");
+x3 = input.nextDouble();
+y = hasil[0] + (x1*hasil[1]) + (x2*hasil[2] + (x3*hasil[3]));
+System.out.println("Nilai Prediksi adalah:");
+
+System.out.println(y);
+System.out.println();
+System.out.println("Apakah anda ingin mencetak hasil prediksi ke file.txt ?");
+System.out.println("1. Ya");
+System.out.println("2. Tidak");
+pilihan = input.nextDouble();
+if ( pilihan == 1){
+    TulisFileArray(hasil, nk);}
+    else{System.out.println("baik");}
+    
+}
+
+
+} 
+
