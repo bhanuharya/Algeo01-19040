@@ -294,29 +294,28 @@ public class main {
     /* INPUT */
     public static void inputSPLKeyboard() {
         Scanner input = new Scanner(System.in);
-        System.out.print("Jumlah baris (m) = ");
+        System.out.print("Jumlah persamaan = ");
         int m = input.nextInt();
-        System.out.print("Jumlah kolom (n) = ");
+        System.out.print("Jumlah peubah = ");
         int n = input.nextInt();
         double a[][] = new double[m][n];
         double b[] = new double[m];
-        int i,j;
+        int i, j;
         // input matriks a
-        System.out.println("Input matriks a[i][j]: ");
-        for (i=0;i<m;i++) {
-            for (j=0;j<n;j++) {
-                System.out.print("a["+i+"]["+j+"]: ");
+        System.out.println("Input matriks "+m+"x"+n+": ");
+        for (i = 0; i < m; i++) {
+            for (j = 0; j < n; j++) {
                 a[i][j] = input.nextDouble();
             }
         }
         // input array b
-        System.out.println("Input b[i]: ");
-        for (i=0;i<m;i++) {
-            System.out.print("b["+i+"]: ");
-            b[i]= input.nextDouble();
+        System.out.println("Input b: ");
+        for (i = 0; i < m; i++) {
+            System.out.print("b[" + (i+1) + "]: ");
+            b[i] = input.nextDouble();
         }
         System.out.println("Matriks augmented:");
-        printMatriksAugmented(a,b);
+        printMatriksAugmented(a, b);
     }
     /* OUTPUT */
     public static void printMatriks (double[][] mat) {
@@ -603,5 +602,41 @@ for (int k = 0; k < n; k++)
             System.err.printf("error");
         }
         return result;
+    }
+        private static void InverseSPL (double[][] A, double[] b) {
+        int n=A.length;
+        int i,j;
+        if (detCofactor(A,n) != 0) {
+            // mengubah dimensi array b menjadi matriks B, agar bisa melakukan perkalian matriks
+            double[][]B = new double[n][1];
+            int p=B.length;
+            for (i=0;i<p;i++) {
+                B[i][0]=b[i];
+            }
+            double[][] inverseA = matriksBalikan(A,n);
+            double[][] matriksHasil = PerkalianMatriks(inverseA,B);
+            System.out.println("Solusi: ");
+            for (j=0;j<(matriksHasil.length);j++) {
+                System.out.println("x["+(j+1)+"] = "+matriksHasil[j][0]);
+            }
+        } else { // jika detA nya 0, tidak bisa pakai metode invers
+            System.out.println("Tidak dapat dihitung dengan metode Invers karena matriks tidak mempunyai balikan");
+        }
+    }
+
+    public static double[][] PerkalianMatriks(double[][] M1, double[][] M2) {
+        int barisM1 = M1.length;
+        int kolomM1 = M1[0].length;
+        int kolomM2 = M2[0].length;
+        double[][] MHasil = new double[barisM1][kolomM2];
+        int i, j, k;
+        for (i = 0; i < (barisM1); i++) {
+            for (j = 0; j < (kolomM2); j++) {
+                for (k = 0; k < (kolomM1); k++) {
+                    MHasil[i][j] += M1[i][k] * M2[k][j];
+                }
+            }
+        }
+        return (MHasil);
     }
 }
