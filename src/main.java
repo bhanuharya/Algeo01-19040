@@ -337,7 +337,7 @@ public class main {
     }
     public static void printArray (double[] arr) {
         for (int i = 0; i < arr.length; i++) {
-            System.out.println("x["+i+"]: "+arr[i]);
+            System.out.println("x["+(i+1)+"]: "+arr[i]);
         }
     }
     
@@ -639,4 +639,77 @@ for (int k = 0; k < n; k++)
         }
         return (MHasil);
     }
+    public static void MetodeKaidahCramer() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Masukkan nilai n = ");
+        int n = input.nextInt();
+        double a[][] = new double[n][n];
+        double b[] = new double[n];
+        int i, j;
+        // input matriks a
+        System.out.println("Input matriks "+n+"x"+n+": ");
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                a[i][j] = input.nextDouble();
+            }
+        }
+        // input array b
+        System.out.println("Input b: ");
+        for (i = 0; i < n; i++) {
+            System.out.print("b[" + (i+1) + "]: ");
+            b[i] = input.nextDouble();
+        }
+        int var;
+        if (detCofactor(a, n) != 0) {
+            System.out.println("Solusi:");
+            for (var = 0; var < n; var++) {
+                System.out.print("x[" + (var + 1) + "] = ");
+                Cramer(a, b, var);
+            }
+        } else { // jika detA nya 0
+            System.out.println("Tidak dapat dihitung dengan Kaidah Cramer");
+        }
+        System.out.println("Keluar dari program...");
+        System.exit(0);
+    }
+    public static void MetodeMatriksBalikan() {
+        Scanner input = new Scanner(System.in);
+        System.out.print("Masukkan nilai n = ");
+        int n = input.nextInt();
+        double A[][] = new double[n][n];
+        double b[] = new double[n];
+        int i, j;
+        // input matriks a
+        System.out.println("Input matriks "+n+"x"+n+": ");
+        for (i = 0; i < n; i++) {
+            for (j = 0; j < n; j++) {
+                A[i][j] = input.nextDouble();
+            }
+        }
+        // input array b
+        System.out.println("Input b: ");
+        for (i = 0; i < n; i++) {
+            System.out.print("b[" + (i+1) + "]: ");
+            b[i] = input.nextDouble();
+        }
+        if (detCofactor(A,n) != 0) {
+            // mengubah dimensi array b menjadi matriks B, agar bisa melakukan perkalian matriks
+            double[][]B = new double[n][1];
+            int p=B.length;
+            for (i=0;i<p;i++) {
+                B[i][0]=b[i];
+            }
+            double[][] inverseA = matriksBalikan(A,n);
+            double[][] matriksHasil = PerkalianMatriks(inverseA,B);
+            System.out.println("Solusi:");
+            for (j=0;j<(matriksHasil.length);j++) {
+                System.out.println("x["+(j+1)+"] = "+matriksHasil[j][0]);
+            }
+        } else { // jika detA nya 0, tidak bisa pakai metode invers
+            System.out.println("Tidak dapat dihitung dengan metode Invers karena matriks tidak mempunyai balikan");
+        }
+        System.out.println("Keluar dari program...");
+        System.exit(0);
+    }
+
 }
