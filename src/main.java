@@ -105,7 +105,6 @@ public class main {
                 matrixInt = bacaFile("interpolasi.txt");
                 //Mendapatkan baris
                 nInt = matrixInt.length;
-                System.out.println("test");
 
                 System.out.println("x:");
                 x = input.nextDouble();
