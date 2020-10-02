@@ -1,6 +1,8 @@
 import java.util.Scanner;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.FileNotFoundException;
 
 public class main {
@@ -143,7 +145,7 @@ public class main {
         else
         {
             double cofactor[][] = new double [n-1][n-1];
-            double determinan = 0;
+            double determinan = 10E-100;;
             //Ekspansi kofaktor baris pertama matriks
             for (int j=0; j<n; j++)
             {
@@ -349,60 +351,77 @@ public class main {
         }
     }
     
- public static void mainInverse (){
-         // masukan ukuran matriks nxn
-         Scanner input = new Scanner(System.in);
+    public static void mainInverse (){
+        // masukan ukuran matriks nxn
+        Scanner input = new Scanner(System.in);
+        System.out.println("Masukan dimensi dari matriks: ");
+        int n = input.nextInt();
+        System.out.println("\n");
+        
+        //definisikan matriks yang dibutuhkan
+        double matrix[][]= new double[n][n];
+        double adj[][]= new double[n][n];
+        double inv[][]= new double[n][n];
+        
+        //input data matriks
+        inputMatrix(input, matrix, n);
+        System.out.println("\n");
 
-            
-            System.out.println("1. Cari Matriks Balikan dengan Metode Ekspansi Kofaktor");
-            System.out.println("2. Cari Matriks Balikan dengan Metode Gauss Jordan");
-            System.out.println("Pilih Metode untuk Mencari Matriks Balikan: ");
-            int pilihan = input.nextInt();
-            System.out.println("Masukan dimensi dari matriks: ");
-            int n = input.nextInt();
-            System.out.println("\n");
-           //definisikan matriks yang dibutuhkan
-             double matrix[][]= new double[n][n];
-            double adj[][]= new double[n][n];
-            double inv[][]= new double[n][n];
+        //Output Matriks yang diinput
+        System.out.println("Matriks anda adalah: ");
+        print(matrix, n);
+        System.out.println("\n");
+        if (determinan(matrix, n) == 0){
+           System.out.print("Matriks singular, tidak memiliki matriks balikan!");
+       }else{
 
-             //input data matriks
-            inputMatrix(input, matrix, n);
-            System.out.println("\n");
- 
-            //Output Matriks yang diinput
-             System.out.println("Matriks anda adalah: ");
-             print(matrix, n);
-            System.out.println("\n");
-            
-            System.out.println("\n");
+           
+           System.out.println("1. Cari Matriks Balikan dengan Metode Ekspansi Kofaktor");
+           System.out.println("2. Cari Matriks Balikan dengan Metode Gauss Jordan");
+           System.out.println("Pilih Metode untuk Mencari Matriks Balikan: ");
 
-            if (determinan(matrix, n) == 0){
-                System.out.print("Matriks singular, tidak memiliki matriks balikan!");
-            }else{
-            
-            if (pilihan == 1){
-                System.out.print("Matriks balikan anda adalah: \n");
-                // menentukan adjoint dari matriks
-                adj = adjoint(matrix, adj, n);
- 
-                 // menentukan matriks balikan
-                inv = matriksBalikan(matrix, n);
-                print(inv, n);
-            }else if (pilihan == 2){
-                inv = gaussian(matrix, n);
-                print(inv, n);
-            }
+           int pilihan = input.nextInt();
+           System.out.println("\n");
+           
+           if (pilihan == 1){
+               System.out.print("Matriks balikan anda adalah: \n");
+               // menentukan adjoint dari matriks
+               adj = adjoint(matrix, adj, n);
 
-        }
-     
- 
-         System.out.println("\n");
+                // menentukan matriks balikan
+               inv = matriksBalikan(matrix, n);
 
-         System.out.println("[Terima Kasih!]");
-         System.out.println("\n");
- 
-    }
+               
+           System.out.println("\n");
+           System.out.println("1. print ke file.txt");
+           System.out.println("2. print ke console");
+           int output1 = input.nextInt();
+
+           if (output1 == 1){TulisFileMatriks(inv, n);}
+               else if (output1 == 2){print(inv, n);}
+               
+               
+           }else if (pilihan == 2){
+               inv = gaussian(matrix, n);
+               System.out.println("1. cetak ke fil external");
+               System.out.println("2. cetak di console");
+               int output2 = input.nextInt();
+    
+               if (output2 == 1){TulisFileMatriks(inv, n);}
+                   else if (output2 == 2){print(inv, n);}
+                   
+           }
+
+       }
+    
+
+        System.out.println("\n");
+
+        System.out.println("[Terima Kasih!]");
+        System.out.println("\n");
+
+   }
+
 
     public static double[][] matriksBalikan(double matrix[][], int n) { 
     
@@ -781,4 +800,26 @@ for (int k = 0; k < n; k++)
         System.out.println(det_temp / detA);
     }
 
+// print to file
+    public static void TulisFileMatriks(double[][] matrix, int n){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Nama File: ");
+        String namaFile = input.nextLine();
+        try {
+            FileWriter fileWriter = new FileWriter(namaFile);
+            PrintWriter printWriter = new PrintWriter(fileWriter);
+            for (int i=0;i<n;i++){
+                // System.out.printf("Arr[%3d]: |",i);
+                for (int j=0;j<n;j++){
+                    printWriter.print(matrix[i][j]+"  ");
+                }
+                // System.out.println("|");
+                printWriter.println();
+            }
+            printWriter.close();
+        }
+        catch (IOException e){
+            e.printStackTrace();
+        }
+    }
 }
