@@ -1259,7 +1259,7 @@ public static void MetodeGauss() {
         Gauss(a,b);
         /* Print solusi Gauss */
         int solusiGauss = cekBarisTerakhir(a, b);
-        System.out.println("Solusi Gauss Jordan adalah:");
+        System.out.println("Solusi Gauss  adalah:");
         if (solusiGauss == 1) {
             //int m= a.length;
             //int n= a[0].length;
@@ -1287,22 +1287,6 @@ public static void MetodeGauss() {
         }
         if (solusiGauss == 2) {
             System.out.println("Solusi dalam bentuk parametrik");
-            arrParametrik = new String[a[0].length];
-            solusiParametrik(a,b);
-            for(i = 0;i<arrParametrik.length;i++)
-            {
-                System.out.println("x["+(i+1)+"] = " + arrParametrik[i]);
-            }
-            System.out.println("Simpan hasil?");
-            System.out.println("1. Ya");
-            System.out.println("2. Tidak");
-            int YN = input.nextInt();
-            if (YN==1) {
-                TulisFileArrayString(arrParametrik, arrParametrik.length);
-            }
-            else if (YN==2) {
-                System.out.println("Selesai");
-            }
         }
         if (solusiGauss == 3) {
             System.out.println("Tidak ada solusi");
@@ -1364,22 +1348,6 @@ public static void MetodeGauss() {
         }
         if (solusiGaussJordan == 2) {
             System.out.println("Solusi dalam bentuk parametrik");
-            arrParametrik = new String[a[0].length];
-            solusiParametrik(a,b);
-            for(i = 0;i<arrParametrik.length;i++)
-            {
-                System.out.println("x["+(i+1)+"] = " + arrParametrik[i]);
-            }
-            System.out.println("Simpan hasil?");
-            System.out.println("1. Ya");
-            System.out.println("2. Tidak");
-            int YN = input.nextInt();
-            if (YN==1) {
-                TulisFileArrayString(arrParametrik, arrParametrik.length);
-            }
-            else if (YN==2) {
-                System.out.println("Selesai");
-            }
         }
         if (solusiGaussJordan == 3) {
             System.out.println("Tidak ada solusi");
@@ -1496,52 +1464,8 @@ public static void MetodeGauss() {
         }
     }  
       public static String arrParametrik[];
-    private static void solusiParametrik(double a[][], double b[])
-    {
-        int i,j,brs,kol;
-        int p=a.length;
-        int q=a[0].length;
-        for(i=0;i<q;i++)
-        {
-            if(countKol(a,i) > 1)
-            {
-                arrParametrik[i] = randomChar();
-            }
-        }
-        for(brs=0; brs<p;kol++)
-        {
-             kol = brs;
-            while(a[brs][kol] != 1 && kol<a[brs].length - 1 )
-            {
-                kol++;
-            }
-            if(arrParametrik[kol] == null)
-            {
-                arrParametrik[kol] = ""+ (b[brs]);
-                for( j = kol + 1;j<a[brs].length;j++)
-                {
-                    if(a[brs][j] != 0)
-                    {
-                        arrParametrik[kol] += a[kol][j] > 0 ? " - " : " + ";
-                        arrParametrik[kol] += a[kol][j]+""+arrParametrik[j];
-                    }
-                }
-            }
-        }
+    
 
-    }
-    private static int countKol (double mat[][], int kol) 
-    {
-        int count = 0;
-        for(int i = 0;i<mat.length;i++)
-        {
-            if(mat[i][kol] > 0)
-            {
-                count++;
-            }
-        }
-        return count;
-    }
     private static String randomChar() {
         Random rd = new Random();
         int rnd = 97 + rd.nextInt(26);
