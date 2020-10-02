@@ -773,5 +773,15 @@ for (int k = 0; k < n; k++)
         }
         return Mout;
     }
+        public static void Cramer(double[][] A, double[] b, int var) {
+        double[][] temp = copyMatriks(A);
+        int i;
+        double detA = detCofactor(A, A.length);
+        for (i = 0; i < temp.length; i++) {
+            temp[i][var] = b[i];
+        }
+        double det_temp = detCofactor(temp, temp.length);
+        System.out.println(det_temp / detA);
+    }
 
 }
